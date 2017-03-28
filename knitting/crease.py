@@ -1,58 +1,84 @@
-import copy
-import time
 
+def mix_evenly(l):
+    sorted_l = sorted(l)
 
-def increase_entropy(mask_list):
-    # increase largest number and decrease smallest
-    mask_list = sorted(mask_list)
-    if mask_list[-1] - mask_list[0] > 1:
-       mask_list[0]  += 1 
-       mask_list[-1] -= 1
-    return sorted(mask_list)
+    N = len(sorted_l)
 
+    N_right = sum([1 for v in sorted_l if v == sorted_l[-1]])
+    N_left  = N - N_right
+    start_from_right = N_left > N_right
+    if start_from_right:
+        # then reverse list
+        sorted_l = sorted_l[::-1]
 
-def list_diff(l1, l2):
-    # calc manhattan-difference between lists
-    diff = 0
-    for v1, v2 in zip(l1, l2):
-        diff += abs(v1-v2)
-    return diff
+    l = []
+    while len(sorted_l) > 0:
+        add_to_right    = len(sorted_l)%2 == 0
+        take_from_right = (len(sorted_l)-1)%4 < 2
+
+        if take_from_right:
+            val = sorted_l.pop(-1)
+        else:
+            val = sorted_l.pop(0)
+
+        if add_to_right:
+            l += [val]
+        else:
+            l = [val] + l
+    return l
+
+def max_entropy_list(total_masks, patterns):
+    smallest_common = total_masks//patterns
+
+    base_list = [smallest_common]*patterns
+    missing   = total_masks - smallest_common*patterns
+
+    assert missing >= 0
+    assert missing <  total_masks
+
+    for i in range(missing):
+        base_list[i] += 1
+
+    assert sum(base_list) == total_masks
+
+    return mix_evenly(base_list)
+
+def crease(N_from, N_to):
+
+    dN  = N_to - N_from
+
+    evenly_spread = max_entropy_list(N_from, abs(dN))
+
+    action   = 'increase' if dN > 0 else 'decrease'
+
+    p_min = min(evenly_spread)
+    N_min = sum([1 for p in evenly_spread if p == p_min])
+    p_max = max(evenly_spread)
+    N_max = sum([1 for p in evenly_spread if p == p_max])
+
+    solution = {'from':N_from,
+                'to'  :N_to,
+                'action':action,
+                'action_sign': 1 if action == 'increase' else -1,
+                'suggestion':evenly_spread,
+                'summary': [ (p_min, N_min), (p_max, N_max)]   }
+
+    assert solution['summary'][0][1] + solution['summary'][1][1] == dN
+    assert solution['summary'][0][0]*solution['summary'][0][1] + solution['summary'][1][0]*solution['summary'][1][1] == N_from
+
+    return solution
+
 
 # EXAMPLE
 # 12 patterns leading to 23 de/in-creases
 def run_example():
-    dN  = 23
-    N_1 = 50
 
-    nl     = [0]*dN
-    nl_old = copy.deepcopy(nl)
-    nl[-1] = N_1
+    N_from = 50
+    N_to   = 57
+    sol = crease(N_from, N_to)
 
-    safety_count = 0
-    max_count    = 100 + nl[-1]
-    while not list_diff(nl_old, nl)==0:
-        print(nl)
-        nl_old = copy.deepcopy(nl)
-        nl     = increase_entropy(nl)
-        safety_count += 1
-        if safety_count > max_count:
-            break
-
-    l = []
-
-    for count in range(len(nl)):
-        take_from_left = count%2 == 0
-        append_to_left = (count-1)%4 > 1
-
-        val = nl.pop(0) if take_from_left else nl.pop(-1)
-
-        if append_to_left:
-            l = [val]+l
-        else:
-            l = l+[val]
     print('='*40)
-    print(l)
+    print(sol)
 
-    # l_direct = [N_1/dN]*dN
-    # print(l_direct)
-    return l
+if __name__ == '__main__':
+    run_example()
