@@ -55,16 +55,17 @@ def crease(N_from, N_to):
     N_min = sum([1 for p in evenly_spread if p == p_min])
     p_max = max(evenly_spread)
     N_max = sum([1 for p in evenly_spread if p == p_max])
+    summary = [ (p_min, N_min), (p_max, N_max)] if p_max>p_min else [ (p_min, N_min) ]
 
     solution = {'from':N_from,
                 'to'  :N_to,
                 'action':action,
                 'action_sign': 1 if action == 'increase' else -1,
                 'suggestion':evenly_spread,
-                'summary': [ (p_min, N_min), (p_max, N_max)]   }
+                'summary': summary}
 
-    assert solution['summary'][0][1] + solution['summary'][1][1] == dN
-    assert solution['summary'][0][0]*solution['summary'][0][1] + solution['summary'][1][0]*solution['summary'][1][1] == N_from
+    # assert sum([ 1 for l,n in summary ]) == dN
+    assert sum([ l*n for l,n in summary ]) == N_from
 
     return solution
 

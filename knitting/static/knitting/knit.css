@@ -1,0 +1,33 @@
+
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+}
+
+.wrapper{
+}
+
+.container{
+  border: 0px solid #DDDDDD;
+}
+.row{
+  border: 0px solid #DDDDDD;
+  height : 60px;
+  vertical-align: middle;
+}
+
+.knit-slider {
+  width: 100%;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+
+span.label{
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  background:rgba(227,162,11,0.6);
+  padding: 10px; 
+  font-size: 40px;
+  vertical-align: middle;
+}

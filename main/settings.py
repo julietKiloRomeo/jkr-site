@@ -25,7 +25,7 @@ SECRET_KEY = '2nei3f)2z=k&d3&t2_@i6rzf5!_uy+dw6zf!+d=4!^m#^cakhb'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -54,7 +54,7 @@ ROOT_URLCONF = 'main.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR+'/knitting/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -116,5 +116,9 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "knitting/static"),
+]
 
 STATIC_URL = '/static/'
