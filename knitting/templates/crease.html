@@ -20,10 +20,86 @@
 <link rel="stylesheet" href="{% static "knitting/knit.css" %}">
 
     <script>
+        function pattern_text(N, M, increase)
+        {
+            var msg = N+' <i class="fa fa-times"></i> '
+            if (M>1)
+            {
+                msg    += (M-1)+' + '
+            }
+            if (increase)
+            {
+                msg    += '1 <i class="fa fa-caret-right"></i> 2'
+            }else
+            {
+                msg    += '2 <i class="fa fa-caret-right"></i> 1'
+            }
+            if (N==0){msg='';}
+            return msg;
+        } 
+        <!-- pattern_text() --> 
+        
+
+        function jCrease()
+        {
+            var from = parseInt(document.getElementById('id_out_from').value, 10);
+            var to   = parseInt(document.getElementById('id_out_to').value, 10);
+
+            var N             = Math.abs(from-to)
+
+            var small_pattern = Math.floor(from/N);
+            var large_pattern = small_pattern + 1;
+            
+            var N_large       = from%small_pattern
+            var N_small       = N-N_large
+
+            if (from==to)
+            {
+                $("#jres" ).html('');
+                $("#jres").css('visibility', 'hidden');
+                $("#jres2").html('');
+                $("#jres2").css('visibility', 'hidden');
+            }
+            else
+            {
+                $("#jres").css('visibility', 'visible');
+                $("#jres" ).html( pattern_text(N_small, small_pattern, to>from) );
+                var msg = pattern_text(N_large, large_pattern, to>from)
+                if(msg=='')
+                {
+                    $("#jres2").css('visibility', 'hidden');
+                    $("#jres2").html( msg );
+                }
+                else
+                {
+                    $("#jres2").css('visibility', 'visible');
+                    $("#jres2").html( msg );
+                }
+            }
+        }
+
+        function update()
+        {
+            var from = parseInt(document.getElementById('id_N_from').value, 10);
+            var to   = parseInt(document.getElementById('id_N_to').value, 10);
+            document.getElementById('id_out_from').value   = from;
+            document.getElementById('id_out_to').value   = to;
+
+            jCrease()
+
+            document.getElementById('id_N_to').max = from*2;
+            document.getElementById('id_N_to').min = Math.floor(from/2);
+        }
+
+
         $( document ).ready(function() {
             document.getElementById('id_out_from').value = document.getElementById('id_N_from').value;
             document.getElementById('id_out_to').value = document.getElementById('id_N_to').value;
+            update()
+
         });
+
+
     </script>
 {% endblock %}
 
@@ -31,16 +107,22 @@
 {% block form %}
 <div class="container">
 
-    <h1> Øge/Fælde hjælper </h1>
+    <div class="row">
+        <div class="column column-90">
+            <h1> Frigg </h1>
+        </div>
+    </div>
 
-    <form action="/knitting/" method="post"  oninput=" o_from.value = N_from.value; o_to.value = N_to.value">
+    <form action="/knitting/"
+          method="post"
+          oninput=" update() " >
         {% csrf_token %}
 
             <div class="row">
-                <div class="column column-75">
+                <div class="column column-90">
                     {{form.N_from}}
                 </div>
-                <div class="column column-25">
+                <div class="column column-10">
                     <span class="label">
                         <output name="o_from"  id="id_out_from" for="from_range">
                         </output>
@@ -49,22 +131,30 @@
             </div>
     
             <div class="row">
-                <div class="column column-25 column-offset-75">
-                    <input type="submit" value="til"/>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="column column-75">
+                <div class="column column-90">
                     {{form.N_to}}
                 </div>
-                <div class="column column-25">
+                <div class="column column-10">
                     <span class="label">
                         <output name="o_to" id="id_out_to" for="to_range">
                         </output> 
                     </span>
                 </div>
             </div>
+
+        <div class="row">
+            <div class="column column-75 column-offset-25">
+                <span id='jres' name='jres' class='label'>  </span>
+            </div>
+        </div>
+        <div class="row" style="height: 10px">
+        </div>
+
+        <div class="row">
+            <div class="column column-75 column-offset-25">
+                <span id='jres2' name='jres2' class='label'>  </span>
+            </div>
+        </div>
 
     </form>
 
@@ -84,8 +174,13 @@
                 </h1>
             </div>
         </div>
+
     {% endfor  %}
 </div>
+
+
+
+
 {% endblock %}
 
 
