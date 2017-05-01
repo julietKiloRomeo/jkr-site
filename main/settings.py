@@ -54,7 +54,9 @@ ROOT_URLCONF = 'main.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR+'/knitting/templates/'],
+        'DIRS': [BASE_DIR+'/knitting/templates/',
+                 BASE_DIR+'/viz/templates/',
+                 BASE_DIR+'/main/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,6 +121,8 @@ USE_TZ = True
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "knitting/static"),
+    os.path.join(BASE_DIR, "main/static"),
 ]
 
 STATIC_URL = '/static/'
+STATIC_ROOT = '/home/jkr/julietKiloRomeo/static'
