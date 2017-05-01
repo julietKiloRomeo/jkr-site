@@ -9,6 +9,7 @@
 <title>Crease</title>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<link rel="stylesheet" href="{% static "main/main.css" %}">
 
 {% block top %}
 {% endblock %}
@@ -17,6 +18,12 @@
 
 </head>
 <body>
+<ul class="nav">
+	<li><a href="/">Home</a></li>
+	<li><a href="/knitting">Knitting</a></li>
+	<li><a href="/data">Data</a></li>
+</ul>
+
     <div class="wrapper">
         {% block form %}
         {% endblock %}

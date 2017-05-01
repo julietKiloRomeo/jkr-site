@@ -22,16 +22,21 @@
     <script>
         function pattern_text(N, M, increase)
         {
+            console.log(N, M)
             var msg = N+' <i class="fa fa-times"></i> '
-            if (M>1)
-            {
-                msg    += (M-1)+' + '
-            }
             if (increase)
             {
+                if (M>1)
+                {
+                    msg    += (M-1)+' + '
+                }
                 msg    += '1 <i class="fa fa-caret-right"></i> 2'
             }else
             {
+                if (M>2)
+                {
+                    msg    += (M-2)+' + '
+                }
                 msg    += '2 <i class="fa fa-caret-right"></i> 1'
             }
             if (N==0){msg='';}
@@ -50,8 +55,12 @@
             var small_pattern = Math.floor(from/N);
             var large_pattern = small_pattern + 1;
             
-            var N_large       = from%small_pattern
+            var from_small    = N*small_pattern
+            var N_large       = from - from_small
             var N_small       = N-N_large
+
+            console.log('jcrease', large_pattern, N_large)
+            console.log('jcrease', small_pattern, N_small)
 
             if (from==to)
             {
@@ -119,10 +128,10 @@
         {% csrf_token %}
 
             <div class="row">
-                <div class="column column-90">
+                <div class="column column-80">
                     {{form.N_from}}
                 </div>
-                <div class="column column-10">
+                <div class="column column-20">
                     <span class="label">
                         <output name="o_from"  id="id_out_from" for="from_range">
                         </output>
@@ -131,10 +140,10 @@
             </div>
     
             <div class="row">
-                <div class="column column-90">
+                <div class="column column-80">
                     {{form.N_to}}
                 </div>
-                <div class="column column-10">
+                <div class="column column-20">
                     <span class="label">
                         <output name="o_to" id="id_out_to" for="to_range">
                         </output> 
