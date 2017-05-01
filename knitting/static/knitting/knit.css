@@ -1,13 +1,12 @@
 /* colour scheme
-https://coolors.co/100b00-85cb33-efffc8-a5cbc3-3b341f
-https://coolors.co/696d7d-6f9283-8d9f87-cdc6a5-f0dcca
-*/
+https://coolors.co/dfd6a7-f7ce5b-f7b05b-af9b46-1f1300*/
 :root {
   --licorice: #1f1300;
   --brass: #af9b46;
   --pale-yellow: #f7ce5b;
   --tuscan: #dfd6a7;
   --rajah: #f7b05b;
+  --b-rad: 1rem;
 }
 
 input[type=range] {
@@ -42,10 +41,10 @@ h1 {
 }
 
 span.label{
-  -webkit-border-radius: 2%;
-  -moz-border-radius: 2%;
-  border-radius: 2%;
-  border: 1px solid #000000;
+  -webkit-border-radius: var(--b-rad);
+  -moz-border-radius: var(--b-rad);
+  border-radius: var(--b-rad);
+  border: 2px solid #000000;
   background:var(--tuscan);
   padding: 1%; 
   font-size: 3rem;
