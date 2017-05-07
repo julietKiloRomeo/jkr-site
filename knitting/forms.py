@@ -8,7 +8,7 @@ class CreaseForm(forms.Form):
         widget=forms.NumberInput(attrs={'type':'range',
                                         'class':'knit-slider',
                                         'min':10,
-                                        'max':400,
+                                        'max':300,
                                         'name': "from_range"}))
     N_to = forms.IntegerField(
         label='To',
@@ -16,5 +16,5 @@ class CreaseForm(forms.Form):
         widget=forms.NumberInput(attrs={'type':'range',
                                         'class':'knit-slider',
                                         'min':10,
-                                        'max':400,
+                                        'max':500,
                                         'name': "to_range"}))

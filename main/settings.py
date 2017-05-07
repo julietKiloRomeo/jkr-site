@@ -120,6 +120,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "viz/static"),
     os.path.join(BASE_DIR, "knitting/static"),
     os.path.join(BASE_DIR, "main/static"),
 ]

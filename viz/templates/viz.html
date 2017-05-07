@@ -8,44 +8,263 @@
 
 <title>JulietKiloRomeo</title>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <!-- Google Fonts -->
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
 
-<!-- CSS Reset -->
-<link rel="stylesheet" href="//cdn.rawgit.com/necolas/normalize.css/master/normalize.css">
-
-<!-- Milligram CSS minified -->
-<link rel="stylesheet" href="//cdn.rawgit.com/milligram/milligram/master/dist/milligram.min.css">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.1/css/bulma.css">
 <!-- Icons -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<!-- app css -->
-<link rel="stylesheet" href="{% static "main/main.css" %}">
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+
+
+<!-- ui css 
+<link rel="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/themes/smoothness/jquery-ui.css">
+ -->
+
+<link rel="stylesheet" href="{% static "viz/viz.css" %}">
+<script src="{% static "viz/viz.js" %}"></script>
+
+
+
+<style>
+body {
+  font: 11px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.dot {
+  alpha:0.1;
+}
+
+.tooltip {
+  position: absolute;
+  width: 200px;
+  height: 28px;
+  pointer-events: none;
+}
+</style>
+
+
+
+
 
 </head>
 <body>
 
-<div class="column column-100" style="padding-bottom:1%">
-    <ul class="nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/knitting">Knitting</a></li>
-        <li><a href="/data">Data</a></li>
-    </ul>
+<nav class="nav has-shadow">
+  <div class="container">
+    <div class="nav-left">
+      <a class="nav-item">
+        <img src="http://goo.gl/images/hYaqAD" alt="JKR">
+      </a>
+      <a class="nav-item is-tab" href="/">Home</a>
+      <a class="nav-item is-tab" href="/knitting">Knitting</a>
+      <a class="nav-item is-tab" href="/data">Data</a>
+    </div>
+  </div>
+</nav>
+
+<div class="tabs is-boxed is-centered">
+  <ul id='main-tab'>
+    <li data-value="A" class='is-active'><a>Flowers</a></li>
+    <li data-value="B"><a>Wheel</a></li>
+    <li data-value="C"><a>Money</a></li>
+  </ul>
 </div>
 
 
-<div class="container">
-    <div class="column column-100">
-        <a href='/data'>
-            <img src='http://www.mastersindatascience.org/wp-content/uploads/2014/03/Field-of-Commemoration.png' style="width: 1000px;" />
-        </a>
+<section class='section'>
+<div class='container'>
+<div class="columns">
+    <div class="column" id='B'  style='display:none'>
+        <img src='http://www.mastersindatascience.org/wp-content/uploads/2014/03/Field-of-Commemoration.png'
+             style="width: 100%;" />
+    </div>
+    <div class="column" id='A' style='display:inline'>
+      <h2>Ikeda Map</h2>
+      <div id="slider"></div>
+    </div>
+    <div class="column" id='C' style='display:none'>
+        <img src='https://s-media-cache-ak0.pinimg.com/originals/5e/15/f8/5e15f8ea422f70fdc8ff3533cb29d889.jpg'
+             style="width: 100%;" />
     </div>
   </div>
 </div>
+</div>
+
+
+
+
+
+</section>
 
 
 </body>
+
+<script>
+
+$("#main-tab").on("click", "a", function(e){
+    e.preventDefault();
+    var $this = $(this).parent();
+    $this.addClass("is-active").siblings().removeClass("is-active");
+    var div_id = '#'+$this.data("value")
+    $(div_id).show().siblings().hide()
+})
+
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+/* 
+ * value accessor - returns the value to encode for a given data object.
+ * scale - maps value to a visual display encoding, such as a pixel position.
+ * map function - maps from data value to display value
+ * axis - sets up axis
+ */ 
+
+// setup x 
+var xValue = function(d) { return d.x;}, // data -> value
+    xScale = d3.scaleLinear().range([0, width]), // value -> display
+    xMap = function(d) { return xScale(xValue(d));}, // data -> display
+    xAxis = d3.axisBottom().scale(xScale);
+
+// setup y
+var yValue = function(d) { return d.y;}, // data -> value
+    yScale = d3.scaleLinear().range([height, 0]), // value -> display
+    yMap = function(d) { return yScale(yValue(d));}, // data -> display
+    yAxis = d3.axisLeft().scale(yScale);
+
+// setup fill color
+var cValue = function(d) { return d.c;},
+    color = d3.scaleOrdinal(d3.schemeCategory10);
+
+// add the graph canvas to the body of the webpage
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+// add the tooltip area to the webpage
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+
+  // load data
+  var data = []
+
+  var u = 0.99;
+
+  for (var j = 0; j < 10; j++) {
+    data.push({x:Math.random()*2+0, y:Math.random()*2-2, c:1})
+    for (var i = 0; i < 500; i++) {
+      prev_point = data[data.length - 1]
+      x = data[data.length - 1].x
+      y = data[data.length - 1].y
+
+      t = 0.4 - 6./(1 + x*x + y*y)
+      new_x = 1 + u*(x*Math.cos(t) - y*Math.sin(t)) 
+      new_y = u*(x*Math.sin(t) + y*Math.cos(t)) 
+
+      data.push( {x:new_x, y:new_y, c:1} )
+    }
+  }
+
+  for (var j = 0; j < 4; j++) {
+    data.push({x:Math.random()*2+2, y:Math.random()*2+3, c:1})
+    for (var i = 0; i < 500; i++) {
+      prev_point = data[data.length - 1]
+      x = data[data.length - 1].x
+      y = data[data.length - 1].y
+
+      t = 0.4 - 6./(1 + x*x + y*y)
+      new_x = 1 + u*(x*Math.cos(t) - y*Math.sin(t)) 
+      new_y = u*(x*Math.sin(t) + y*Math.cos(t)) 
+
+      data.push( {x:new_x, y:new_y, c:1} )
+    }
+  }
+
+
+  // don't want dots overlapping axis, so add in buffer to data domain
+  xScale.domain([d3.min(data, xValue)-1, d3.max(data, xValue)+1]);
+  yScale.domain([d3.min(data, yValue)-1, d3.max(data, yValue)+1]);
+
+  // x-axis
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+    .append("text")
+      .attr("class", "label")
+      .attr("x", width)
+      .attr("y", -6)
+      .style("text-anchor", "end")
+      .text("Calories");
+
+  // y-axis
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("class", "label")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Protein (g)");
+
+  // draw dots
+  svg.selectAll(".dot")
+      .data(data)
+    .enter().append("circle")
+      .attr("class", "dot")
+      .attr("r", 1.0)
+      .style("opacity", .5)
+      .attr("cx", xMap)
+      .attr("cy", yMap)
+      .style("fill", function(d) { return color(cValue(d));}) ;
+
+  // draw legend
+  var legend = svg.selectAll(".legend")
+      .data(color.domain())
+    .enter().append("g")
+      .attr("class", "legend")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+
+  // draw legend colored rectangles
+  legend.append("rect")
+      .attr("x", width - 18)
+      .attr("width", 18)
+      .attr("height", 18)
+      .style("fill", color);
+
+  // draw legend text
+  legend.append("text")
+      .attr("x", width - 24)
+      .attr("y", 9)
+      .attr("dy", ".35em")
+      .style("text-anchor", "end")
+      .text(function(d) { return d;})
+
+
+
+
+
+
+
+</script>
 
 </html>                                		                                		
