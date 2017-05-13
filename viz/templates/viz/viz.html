@@ -1,12 +1,8 @@
+{% extends "main/base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>JulietKiloRomeo</title>
+
+{% block top %}
 
 <!-- Google Fonts -->
 <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:300,300italic,700,700italic">
@@ -57,11 +53,9 @@ body {
 </style>
 
 
+{% endblock %}
 
-
-
-</head>
-<body>
+{% block content %}
 
 <nav class="nav has-shadow">
   <div class="container">
@@ -110,8 +104,9 @@ body {
 
 </section>
 
+{% endblock %}
 
-</body>
+{% block bottom %}
 
 <script>
 
@@ -266,5 +261,4 @@ var tooltip = d3.select("body").append("div")
 
 
 </script>
-
-</html>                                		                                		
+{% endblock %}
