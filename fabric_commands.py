@@ -94,7 +94,7 @@ def gunicorn():
 
 def test_gunicorn():
     output = run('curl http://127.0.0.1:8000/knitting'.format(project_folder))
-    assert "<span id='jres2' name='jres2' class='label'>" in output
+    assert "<span id='first-pattern' name='first-pattern' class='label'>" in output
 
 def update_install():
 
