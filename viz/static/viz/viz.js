@@ -1,8 +1,10 @@
 
-var state = [ [1,2,3],
-              [4,5,6],
-              [7,8,'']];
-var pos = [2,2]
+var state = [ [' <img src="static/viz/p1.png" height="100%" width="100%"> ',' <img src="static/viz/p2.png" height="100%" width="100%"> ',' <img src="static/viz/p3.png" height="100%" width="100%"> ',' <img src="static/viz/p3.png" height="100%" width="100%"> '],
+              [' <img src="static/viz/p4.png" height="100%" width="100%"> ',' <img src="static/viz/p5.png" height="100%" width="100%"> ',' <img src="static/viz/p6.png" height="100%" width="100%"> ',' <img src="static/viz/p6.png" height="100%" width="100%"> '],
+              [' <img src="static/viz/p4.png" height="100%" width="100%"> ',' <img src="static/viz/p5.png" height="100%" width="100%"> ',' <img src="static/viz/p6.png" height="100%" width="100%"> ',' <img src="static/viz/p6.png" height="100%" width="100%"> '],
+              [' <img src="static/viz/p7.png" height="100%" width="100%"> ',' <img src="static/viz/p8.png" height="100%" width="100%"> ',' <img src="static/viz/p8.png" height="100%" width="100%"> ',''],];
+
+var pos = [3,3]
 
 
   $("#main-tab").on("click", "a", function(e){
@@ -16,7 +18,7 @@ var pos = [2,2]
 
 function row(idx) {
     var s = "<div class='columns board'>";
-    for (i=0; i<3; i++){
+    for (i=0; i<4; i++){
         if (state[idx][i] == ''){
             s += "<div class='column is-error piece'> <p>"
         } else {
@@ -31,7 +33,7 @@ function row(idx) {
 
 function board() {
     var s = "<div class='board'>"
-    for (r=0; r<3; r++){
+    for (r=0; r<4; r++){
         s += row(r);
     }
     s += '</div>'
@@ -59,9 +61,9 @@ function target(e) {
     }
 
     to[0] = Math.max(0, to[0])
-    to[0] = Math.min(2, to[0])
+    to[0] = Math.min(3, to[0])
     to[1] = Math.max(0, to[1])
-    to[1] = Math.min(2, to[1])
+    to[1] = Math.min(3, to[1])
 
     return to
 }
