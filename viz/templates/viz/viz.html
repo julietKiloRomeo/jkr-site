@@ -3,8 +3,30 @@
 
 
 {% block top %}
+
   <link rel="stylesheet" href="{% static "viz/viz.css" %}">
   <script src="{% static "viz/viz.js" %}"></script>
+
+<style>
+
+.is-info{background-color: #38f;}
+.is-error{background-color: #a44;}
+
+.piece {
+    border-style: solid;
+    border-width: 5px;
+    border-color: black;
+    width: 25vmin;
+    height: 25vmin;
+}
+
+.board {
+    width: 75vmin;
+    height: 25vmin;
+}
+
+</style>
+
 {% endblock %}
 
 
@@ -29,7 +51,7 @@
                 style="width: 100%;" />
       </div>
       <div class="column" id='A' style='display:inline'>
-          <h2>Ikeda Map</h2>
+          <div id="app"> </div>
       </div>
       <div class="column" id='C' style='display:none'>
             <img src='https://s-media-cache-ak0.pinimg.com/originals/5e/15/f8/5e15f8ea422f70fdc8ff3533cb29d889.jpg'
@@ -43,18 +65,4 @@
 
 {% endblock %}
 
-{% block bottom %}
 
-<script>
-
-  $("#main-tab").on("click", "a", function(e){
-      e.preventDefault();
-      var $this = $(this).parent();
-      $this.addClass("is-active").siblings().removeClass("is-active");
-      var div_id = '#'+$this.data("value")
-      $(div_id).show().siblings().hide()
-  })
-
-</script>
-
-{% endblock %}
