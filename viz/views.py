@@ -2,4 +2,4 @@ from django.shortcuts import render
 
 
 def index(request):
-    return render(request, 'viz/viz.html')
+    return render(request, 'viz.html')
