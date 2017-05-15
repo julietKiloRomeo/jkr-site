@@ -6,6 +6,7 @@
 from fabric.api import run, sudo, put, env, cd, prefix
 from fabric.operations import put
 from contextlib import contextmanager as _contextmanager
+import os
 
 base_folder = '/home/jkr'
 env_name    = 'django_env'
@@ -13,11 +14,7 @@ proj_name   = 'julietKiloRomeo'
 project_folder = base_folder + '/' + proj_name
 env_folder = base_folder + '/' + env_name
 
-
-env.hosts = [
-    'jkr_server',
-]
-env.host = 'jkr_server'
+env.host_string = os.getenv('WEBSITE')
 # Set the username
 env.user   = "jkr"
 
@@ -60,6 +57,7 @@ def files():
     run('rm -Rf {}'.format(project_folder))
     run('mkdir {}'.format(env_folder))
     run('mkdir {}'.format(project_folder))
+    run('mkdir {}'.format(project_folder+'/logs'))
 
     with cd(base_folder):
         run('virtualenv {}'.format(env_name))

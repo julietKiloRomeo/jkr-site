@@ -1,3 +1,44 @@
+class Piece {
+    constructor(name, x, y){
+        this.x = x;
+        this.y = y;
+        if (name) {
+            this.img = ' <img src="static/viz/'+name+'.png" height="100%" width="100%"> ';
+        } else {
+            this.img = '';
+        }
+    }
+}
+
+
+class Board {
+    constructor(names, size){
+        this.pieces = [];
+        this.size=size
+        var row,col,x,y;
+        for (var i=0; i<size*size; i++){
+            col = i%size;
+            row = (i-col)/size;
+            x = col/(size)*100+'%'
+            y = row/(size)*100+'%'
+            var piece = new Piece(names[i], x, y)
+            this.pieces.push(piece)
+        }
+        this.state = [size, size]
+    }
+    get render() {
+        var msg = ''
+        for (var i=0; i<this.size*this.size; i++){
+            msg += '<div id="bpc'+i+'" class="jspc" style="left:' + this.pieces[i].x + ';top:' + this.pieces[i].y + ' ">';
+            msg += this.pieces[i].img;
+            msg += '</div>';
+        }
+        return msg
+    }
+}
+
+b = new Board(['p1','p2','p3','p4','p5','p6','p7','p8',''], 3)
+console.log( b.render )
 
 var state = [ [' <img src="static/viz/p1.png" height="100%" width="100%"> ',' <img src="static/viz/p2.png" height="100%" width="100%"> ',' <img src="static/viz/p3.png" height="100%" width="100%"> ',' <img src="static/viz/p3.png" height="100%" width="100%"> '],
               [' <img src="static/viz/p4.png" height="100%" width="100%"> ',' <img src="static/viz/p5.png" height="100%" width="100%"> ',' <img src="static/viz/p6.png" height="100%" width="100%"> ',' <img src="static/viz/p6.png" height="100%" width="100%"> '],
@@ -14,6 +55,9 @@ var pos = [3,3]
       var div_id = '#'+$this.data("value")
       $(div_id).show().siblings().hide()
   })
+
+
+
 
 
 function row(idx) {
@@ -70,6 +114,16 @@ function target(e) {
 
 $(function() {
     $("#app").html( board() )
+    $("#js_board").html( b.render )
+
+$("img").click(function(){
+    var piece = $(this).parent()[0]
+    console.log(piece.style )
+
+    piece.style.transform = 'translateY('+(225)+'px)';
+    piece.style.transform += 'translateX('+(525)+'px)';
+
+ });
 });
 
 

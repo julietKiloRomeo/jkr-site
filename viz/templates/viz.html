@@ -23,10 +23,30 @@
 .is-error{background-color: #000;
           border-radius: 3vmin;}
 
+.jspc{
+  position:absolute;
+  width:33%;
+  height:33%;
+  top:0%;
+  left:0%;
+-moz-transition: transform 1s; 
+-webkit-transition: transform 1s;  
+-ms-transition: transform 1s;  
+-o-transition: transform 1s;  
+transition: transform 1s;  
+}
+
 
 .board {
     width: 80vmin;
     height: 20vmin;
+}
+
+.jsboard {
+    display:block;
+    position:relative;
+    width: 80vmin;
+    height: 80vmin;
 }
 
 </style>
@@ -54,7 +74,7 @@
             <img src='http://www.mastersindatascience.org/wp-content/uploads/2014/03/Field-of-Commemoration.png'
                 style="width: 100%;" />
       </div>
-      <div class="column" id='A' style='display:inline'>
+      <div class="column" id='A' style='display:none'>
           <div id="app"> </div>
       </div>
       <div class="column" id='C' style='display:none'>
@@ -63,6 +83,8 @@
       </div>
     </div> 
   </div>
+            <div id="js_board" class='jsboard'> </div>
+
 </section>
 
 </div>
