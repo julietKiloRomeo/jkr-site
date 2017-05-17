@@ -47,68 +47,109 @@ class Board {
 
 
 function find_piece(idx, board){
+    /*
+    Find the piece on the board which has
+    idx == idx
+    */
     for(var i=0; i<board.pieces.length; i++){
         pc = board.pieces[i];
         if (pc.idx == idx){break;}
-        pc = 0;
+        pc = false;
     }
     return pc;
 }
+
+function swap_pieces(delta, board){
+    swap_pc = find_piece(parseInt(board.state) + parseInt(delta), board);
+
+    if (swap_pc){
+        pivot   = board.pieces[board.state];
+
+        swap_div  = $( '#bpc'+swap_pc.idx );
+        pivot_div = $( '#bpc'+pivot.idx );
+
+        swap_pos  = swap_div.position();
+        pivot_pos  = swap_div.position();
+
+        console.log(swap_pos, 'swap');
+        console.log(pivot_pos, 'pivot');
+
+        // swap_div.transform({ top: pivot_pos.top, left: pivot_pos.left });
+        // pivot_div.transform({ top: swap_pos.top, left: swap_pos.left });
+
+        swap_div.css( 'top', ''+pivot.y, 'left', ''+pivot.x);
+        pivot_div.css( 'top', ''+swap_pc.y, 'left', ''+swap_pc.x);
+
+        var new_state = swap_pc.idx;
+        swap_pc.idx = pivot.idx;
+        pivot.idx   = new_state;
+        board.state = new_state;
+
+        console.log(swap_pc);
+        console.log(pivot);
+        console.log(board.state);
+
+    }
+    
+}
+
+
+function target(e, board) {
+    /*
+    Find the piece on the board which has
+    idx == idx
+    */
+    var delta = false;
+    if (e.key == 'ArrowLeft') {
+        delta = -1;
+    }
+    if (e.key == 'ArrowRight') {
+        delta = 1;
+    }
+    if (e.key == 'ArrowUp') {
+        delta = -board.size;
+    }
+    if (e.key == 'ArrowDown') {
+        delta = board.size
+    }
+    if (delta) { 
+        swap_pieces(delta, board);
+    }
+}
+
 
 
 board = new Board(['p1','p2','p3','p4','p5','p6','p7','p8',''], 3)
 
 
-  $("#main-tab").on("click", "a", function(e){
-      e.preventDefault();
-      var $this = $(this).parent();
-      $this.addClass("is-active").siblings().removeClass("is-active");
-      var div_id = '#'+$this.data("value")
-      $(div_id).show().siblings().hide()
-  })
-
-
-
-function target(e) {
-
-    if (e.key == 'ArrowLeft') {
-        swap_pc = find_piece(board.state - 1, board)
-        console.log('L', swap_pc);
-    }
-    if (e.key == 'ArrowRight') {
-        swap_pc = find_piece(board.state + 1, board)
-        console.log('R', swap_pc);
-    }
-    if (e.key == 'ArrowUp') {
-        swap_pc = find_piece(board.state - board.size, board)
-        console.log('U', swap_pc);
-    }
-    if (e.key == 'ArrowDown') {
-        swap_pc = find_piece(board.state + board.size, board)
-        console.log('D', swap_pc);
-    }
-}
-
+// on load
 
 $(function() {
-    $("#js_board").html( board.render )
+    $("#js_board").html( board.render );
+
+    $('#bpc8').addClass('is-info');
 
     $("img").click(function(){
         var piece = $(this).parent()[0]
         console.log(piece.style )
-
-        piece.style.transform = 'translateY('+(225)+'px)';
-        piece.style.transform += 'translateX('+(525)+'px)';
-
     });
 
 });
 
 
+// callbacks
+
+$("#main-tab").on("click", "a", function(e){
+    e.preventDefault();
+    var $this = $(this).parent();
+    $this.addClass("is-active").siblings().removeClass("is-active");
+    var div_id = '#'+$this.data("value")
+    $(div_id).show().siblings().hide()
+})
 
 
 $(document).bind('keydown', function(e) {
-    target(e);
+    target(e, board);
 });
 
 
