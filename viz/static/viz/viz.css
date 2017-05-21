@@ -1,0 +1,41 @@
+
+.piece {
+    width: 20vmin;
+    height: 20vmin;
+    padding: 0px;
+    margin: 0px;
+    box-sizing: border-box;
+}
+
+.is-info{background-color: #999;
+        z-index:0;}
+
+.is-error{background-color: #000;
+          border-radius: 3vmin;}
+
+.jspc{
+  position:absolute;
+  width:25%;
+  height:25%;
+  top:0%;
+  left:0%;
+z-index:10;
+-moz-transition: transform 1s; 
+-webkit-transition: transform 1s;  
+-ms-transition: transform 1s;  
+-o-transition: transform 1s;  
+transition: transform 1s;  
+}
+
+
+.board {
+    width: 80vmin;
+    height: 20vmin;
+}
+
+.jsboard {
+    display:block;
+    position:relative;
+    width: 80vmin;
+    height: 80vmin;
+}

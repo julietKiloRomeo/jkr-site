@@ -10,5 +10,5 @@ from knitting import crease
 from .forms import CreaseForm
 
 def index(request):
-    return render(request, 'crease.html')
+    return render(request, 'knitting.html')
     
