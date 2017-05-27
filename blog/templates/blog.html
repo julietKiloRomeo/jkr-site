@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block top %}
+    <!-- app css -->
+    <link rel="stylesheet" href="{% static "blog/blog.css" %}">
+    <script src="{% static "blog/blog.js" %}"></script>
+{% endblock %}
+
+
+{% block content %}
+
+{% for post in posts %}
+    <div>
+        {{ post.title }}
+        {{ post.get_absolute_url }}
+    </div>
+{% endfor %}
+
+
+
+
+
+
+{% endblock %}
+
+
