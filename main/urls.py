@@ -18,6 +18,7 @@ from django.contrib import admin
 from . import views
 
 urlpatterns = [
+    url(r'^blog/?', include('blog.urls')),
     url(r'^knitting/?', include('knitting.urls')),
     url(r'^data/?', include('viz.urls')),
     url(r'^admin/?', admin.site.urls),

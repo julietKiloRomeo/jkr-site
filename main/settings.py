@@ -31,6 +31,9 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'main.apps.MainConfig',
+    'knitting.apps.KnittingConfig',
+    'viz.apps.VizConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -56,6 +59,7 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [BASE_DIR+'/knitting/templates/',
                  BASE_DIR+'/viz/templates/',
+                 BASE_DIR+'/blog/templates/',
                  BASE_DIR+'/main/templates/'],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -120,6 +124,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.10/howto/static-files/
 
 STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "blog/static"),
     os.path.join(BASE_DIR, "viz/static"),
     os.path.join(BASE_DIR, "knitting/static"),
     os.path.join(BASE_DIR, "main/static"),
