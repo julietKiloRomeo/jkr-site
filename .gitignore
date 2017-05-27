@@ -3,3 +3,4 @@
 *.vscode*
 static/*
 *.log
+*.pyc
