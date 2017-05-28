@@ -43,6 +43,7 @@ class Post(models.Model):
     slug = models.SlugField('slug', unique_for_date='publish')
     author = models.ForeignKey(User, blank=True, null=True)
     body = models.TextField('body', )
+    javascript = models.TextField('js', )
     tease = models.TextField('tease', blank=True, help_text='Concise text suggested. Does not appear in RSS feed.')
     status = models.IntegerField('status', choices=STATUS_CHOICES, default=2)
     allow_comments = models.BooleanField('allow comments', default=True)

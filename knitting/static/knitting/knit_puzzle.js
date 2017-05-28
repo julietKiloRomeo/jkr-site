@@ -154,9 +154,9 @@ function target(e, board) {
 // instantiate board. Strings should point to actual images... eg. p1.png
 board = new Board(['p1','p2','p3','p4','p5','p6','p7','p8','p2','p3','p4','p5','p6','p7','p8'], 4)
 
-// on load
-$(function() {
-    // render bord
+
+$( document ).ready(function() {
+
     $("#js_board").html( board.render );
     // this seems like the most elegant place to set the style of the pivot
     $('#board_pc8').addClass('is-info');
@@ -179,24 +179,9 @@ $(function() {
         }
     });
 
-    // callback for tabbed menu
-    $("#main-tab").on("click", "a", function(e){
-        e.preventDefault();
-        var $this = $(this).parent();
-        $this.addClass("is-active").siblings().removeClass("is-active");
-        var div_id = '#'+$this.data("value")
-        $(div_id).show().siblings().hide()
-    })
-
-
     $(document).bind('keydown', function(e) {
         target(e, board);
     });
 
+
 });
-
-
-
-
-
-

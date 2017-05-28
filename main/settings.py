@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'blog.apps.BlogConfig',
     'main.apps.MainConfig',
     'knitting.apps.KnittingConfig',
     'viz.apps.VizConfig',
@@ -131,4 +132,4 @@ STATICFILES_DIRS = [
 ]
 
 STATIC_URL = '/static/'
-STATIC_ROOT = '/home/jkr/julietKiloRomeo/static'
+STATIC_ROOT = BASE_DIR+'/static'
