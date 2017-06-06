@@ -6,7 +6,7 @@ class Piece {
         this.idx = idx;
         this.id = 'board_pc'+idx;
         if (name) {
-            this.img = ' <img src="static/viz/'+name+'.png" height="100%" width="100%"> ';
+            this.img = ' <img src="/static/viz/'+name+'.png" height="100%" width="100%"> ';
         } else {
             this.img = '';
         }

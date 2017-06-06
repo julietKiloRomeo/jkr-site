@@ -42,15 +42,19 @@ class Post(models.Model):
     title = models.CharField('title', max_length=200)
     slug = models.SlugField('slug', unique_for_date='publish')
     author = models.ForeignKey(User, blank=True, null=True)
+    is_demo = models.BooleanField('is-demo', default=False)
     body = models.TextField('body', )
     javascript = models.TextField('js', )
-    tease = models.TextField('tease', blank=True, help_text='Concise text suggested. Does not appear in RSS feed.')
+    tease = models.TextField('tease', blank=True, 
+                             help_text='Concise text suggested. Does not appear in RSS feed.')
     status = models.IntegerField('status', choices=STATUS_CHOICES, default=2)
     allow_comments = models.BooleanField('allow comments', default=True)
     publish = models.DateTimeField('publish', default=datetime.datetime.now)
     created = models.DateTimeField('created', auto_now_add=True)
     modified = models.DateTimeField('modified', auto_now=True)
     categories = models.ManyToManyField(Category, blank=True)
+
+
 
     class Meta:
         verbose_name = 'post'
@@ -62,9 +66,12 @@ class Post(models.Model):
     def __unicode__(self):
         return u'%s' % self.title
 
+    def __str__(self):
+        return u'%s' % self.title
+
     @permalink
     def get_absolute_url(self):
-        return reverse('blog.views.post_detail', args=[str(self.slug)])        
+        return reverse('post_detail', args=[str(self.slug)])        
 
     def get_previous_post(self):
         return self.get_previous_by_publish(status__gte=2)

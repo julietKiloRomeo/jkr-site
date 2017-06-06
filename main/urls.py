@@ -19,6 +19,7 @@ from . import views
 
 urlpatterns = [
     url(r'^admin/?', admin.site.urls),
-    url(r'^$', views.post_list),
-    url(r'^(?P<slug>[0-9a-z\-]*)$', views.post_detail),
+    url(r'^$', views.post_list, name='index'),
+    url(r'^(?P<slug>[0-9a-z\-]*)/?$', views.post_detail, name='post.detail'),
+    url(r'^demo/(?P<slug>[0-9a-z\-]*)/?$', views.demo_detail, name='demo.detail'),
 ]
